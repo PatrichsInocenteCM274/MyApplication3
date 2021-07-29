@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
     //adapter for lifes
     private LifeAdapter adapter;
     private ArrayList<Life> lifeList = new ArrayList<>();
-
+    private int countLifes = 3; //vidas en el juego
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,16 +47,17 @@ public class MainActivity extends Activity {
     }
 
     private void setAdapter() {
-        lifeList.add(new Life(true));
-        lifeList.add(new Life(true));
-        lifeList.add(new Life(true));
+        //inicializamos las vidas del jugador
+        for (int i = 0; i < countLifes; ++i) {
+            lifeList.add(new Life(true));
+        }
 
 
         adapter = new LifeAdapter(lifeList);
         binding.rvLifes.setAdapter(adapter);
 
 
-        adapter.removeLife();
+        //adapter.removeLife();
 
     }
 
