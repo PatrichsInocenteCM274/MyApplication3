@@ -1,6 +1,7 @@
 package com.example.myapplicationglv2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
@@ -9,7 +10,11 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.myapplicationglv2.adapters.LifeAdapter;
 import com.example.myapplicationglv2.databinding.ActivityMainBinding;
+import com.example.myapplicationglv2.models.Life;
+
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     private MyGLRenderer mRenderer;
@@ -24,16 +29,35 @@ public class MainActivity extends Activity {
     float radio_front=3.2f;
     float modulo=0.0f;
     float unitarioY,unitarioX;
+
+    //adapter for lifes
+    private LifeAdapter adapter;
+    private ArrayList<Life> lifeList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        setAdapter();
 
         binding.myGLSurfaceView.setVisibility(View.VISIBLE);
         initGLSurfaceView();
         setListeners();
+    }
+
+    private void setAdapter() {
+        lifeList.add(new Life(true));
+        lifeList.add(new Life(true));
+        lifeList.add(new Life(true));
+
+
+        adapter = new LifeAdapter(lifeList);
+        binding.rvLifes.setAdapter(adapter);
+
+
+        adapter.removeLife();
+
     }
 
     public void initGLSurfaceView(){
@@ -146,5 +170,10 @@ public class MainActivity extends Activity {
 
         super.onResume();
         binding.myGLSurfaceView.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed(); //anula el onbackpress en la actividad
     }
 }

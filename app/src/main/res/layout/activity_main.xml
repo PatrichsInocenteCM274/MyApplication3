@@ -194,6 +194,17 @@
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLifes"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_life" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
