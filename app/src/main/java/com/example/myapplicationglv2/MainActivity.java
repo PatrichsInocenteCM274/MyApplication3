@@ -30,6 +30,8 @@ public class MainActivity extends Activity {
     float modulo=0.0f;
     float unitarioY,unitarioX;
     int balas = 5;
+    int vidas_jugador_2 = 3;
+    boolean impacto=false;
 
     //adapter for lifes
     private LifeAdapter adapter;
@@ -130,11 +132,11 @@ public class MainActivity extends Activity {
             //mRenderer.setCenterz(mRenderer.getcenterz() + 0.1f);
             rot=rot+0.05f;
 
-            mRenderer.setfront1((float) (-0.0f+mRenderer.getjugador1x() + Math.sin(rot+Math.PI)*radio_front));
-            mRenderer.setfront2((float) (-3.0f+mRenderer.getjugador1y() + Math.cos(rot+Math.PI)*radio_front));
+            mRenderer.setfront1((float) (mRenderer.getjugador1x() + Math.sin(rot+Math.PI)*radio_front));
+            mRenderer.setfront2((float) (mRenderer.getjugador1y() + Math.cos(rot+Math.PI)*radio_front));
 
-            mRenderer.setCenterx((float) (-0.0f+mRenderer.getjugador1x() + Math.sin(rot)*radio_direccion));
-            mRenderer.setCentery((float) (-3.0+mRenderer.getjugador1y() + Math.cos(rot)*radio_direccion));
+            mRenderer.setCenterx((float) (mRenderer.getjugador1x() + Math.sin(rot)*radio_direccion));
+            mRenderer.setCentery((float) (mRenderer.getjugador1y() + Math.cos(rot)*radio_direccion));
 
             binding.myGLSurfaceView.requestRender();
         });
@@ -142,11 +144,11 @@ public class MainActivity extends Activity {
 
             rot=rot-0.05f;
 
-            mRenderer.setfront1((float) (-0.0f+mRenderer.getjugador1x() + Math.sin(rot+Math.PI)*radio_front));
-            mRenderer.setfront2((float) (-3.0f+mRenderer.getjugador1y() + Math.cos(rot+Math.PI)*radio_front));
+            mRenderer.setfront1((float) (mRenderer.getjugador1x() + Math.sin(rot+Math.PI)*radio_front));
+            mRenderer.setfront2((float) (mRenderer.getjugador1y() + Math.cos(rot+Math.PI)*radio_front));
 
-            mRenderer.setCenterx((float) (-0.0f+mRenderer.getjugador1x() + Math.sin(rot)*radio_direccion));
-            mRenderer.setCentery((float) (-3.0+mRenderer.getjugador1y() + Math.cos(rot)*radio_direccion));
+            mRenderer.setCenterx((float) (mRenderer.getjugador1x() + Math.sin(rot)*radio_direccion));
+            mRenderer.setCentery((float) (mRenderer.getjugador1y() + Math.cos(rot)*radio_direccion));
 
             binding.myGLSurfaceView.requestRender();
         });
@@ -159,11 +161,25 @@ public class MainActivity extends Activity {
             mRenderer.setlaser1y(mRenderer.getjugador1y());
             if(balas>0) {
                 for (int i = 0; i < 200000; i++) {
+                    if (mRenderer.getjugador2x() - 0.1f < mRenderer.getlaser1x() &&
+                            mRenderer.getlaser1x() < mRenderer.getjugador2x() + 0.1f
+                            && mRenderer.getjugador2y() - 0.1f < mRenderer.getlaser1y() &&
+                            mRenderer.getlaser1y() < mRenderer.getjugador2y() + 0.1f){
+                        impacto = true;
+                        break;
+                    }
                     mRenderer.setlaser1x(mRenderer.getlaser1x() + 0.00002f * unitarioX);
                     mRenderer.setlaser1y(mRenderer.getlaser1y() + 0.00002f * unitarioY);
                     binding.myGLSurfaceView.requestRender();
                 }
                 balas--;
+                if(impacto){
+                    //Toast.makeText(this,"Impacto",Toast.LENGTH_LONG).show();
+                    vidas_jugador_2--;
+                    if(vidas_jugador_2==0)Toast.makeText(this,"GANASTE",Toast.LENGTH_LONG).show();
+                    else Toast.makeText(this,"Impacto",Toast.LENGTH_LONG).show();
+                    impacto=false;
+                }
             }
             else Toast.makeText(this,"Recargar!",Toast.LENGTH_LONG).show();
             mRenderer.setlaser1x(100.0f); //Numero arbitrario lejos del mapa

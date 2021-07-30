@@ -20,7 +20,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mProjectionMatrix;
     private final float[] mViewMatrix;
     private final float[] mRotationMatrix;
-    private final float[] mFinalMVPMatrix;
+    private final float[] mFinalMVPMatrix_jugador1;
+    private final float[] mFinalMVPMatrix_jugador2;
     private final float[] mFinalMVPMatrix_laser1;
     private final float[] mTranslateMatrix;
     /** Store our model data in a float buffer. */
@@ -49,7 +50,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     float centerz;
     float jugador1x;
     float jugador1y;
+    float jugador2x;
+    float jugador2y;
     float jugador1z;
+    float jugador2z;
     float laser1x;
     float laser1y;
     float laser1z;
@@ -63,7 +67,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTranslateMatrix = new float[16];
         mViewMatrix = new float[16];
         mRotationMatrix = new float[16];
-        mFinalMVPMatrix = new float[16];
+        mFinalMVPMatrix_jugador1 = new float[16];
+        mFinalMVPMatrix_jugador2 = new float[16];
         mFinalMVPMatrix_laser1 = new float[16];
 
         forfront1 = 0.0f;
@@ -73,11 +78,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         centery=-1.2f;
         centerz=1.0f;
         jugador1x=0.0f;
-        jugador1y=0.0f;
-        jugador1z=0.0f;
+        jugador1y=-3.0f;
+        jugador1z=0.5f;
+        jugador2x=0.0f;
+        jugador2y=3.0f;
+        jugador2z=0.5f;
         laser1x=0.0f;
-        laser1y=0.0f;
-        laser1z=0.0f;
+        laser1y=-3.0f;
+        laser1z=0.5f;
         Matrix.setLookAtM(mViewMatrix, 0, -4.0f, -5.0f, -3.0f, centerx, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
     }
 
@@ -114,12 +122,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mEcube[18] = new EasyCube(-3.f,-2.f,0.5f,1.0f,3.0f,0.239f,0.127f,0.26f);
         mEcube[19] = new EasyCube(3.0f,-2.0f,0.5f,1.0f,3.0f,0.239f,0.127f,0.26f);
         //JUGADOR PRINCIPAL
-        mEcube[20] = new EasyCube(0.0f,-3.0f,0.5f,0.2f,0.2f,0.0f,0.0f,1.0f);
+        mEcube[20] = new EasyCube(0.0f,0.0f,0.0f,0.2f,0.2f,0.0f,0.0f,1.0f);
         //JUGADOR ENEMIGO
-        mEcube[21] = new EasyCube(0.0f,3.0f,0.2f,0.2f,0.2f,1.0f,0.0f,0.0f);
+        mEcube[21] = new EasyCube(0.0f,0.0f,0.0f,0.2f,0.2f,1.0f,0.0f,0.0f);
 
         mSquare = new Squaree(0.0f,0.0f,0.0f,15.0f);
-        laser1 =  new EasyCube(0.0f,-3.0f,0.5f,0.05f,0.05f,0.0f,0.0f,1.0f);
+        laser1 =  new EasyCube(0.0f,0.0f,0.0f,0.05f,0.05f,0.0f,0.0f,1.0f);
 
         //mTextureDataHandle = TextureHelper.loadTexture(mActivityContext, R.drawable.bumpy_bricks_public_domain);
     }
@@ -140,17 +148,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mSquare.draw(mMVPMatrix);
 
         Matrix.setRotateM(mRotationMatrix, 0, mCubeRotation, 1.0f, 1.0f, 1.0f);
-        Matrix.multiplyMM(mFinalMVPMatrix, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        Matrix.multiplyMM(mFinalMVPMatrix_jugador1, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        Matrix.multiplyMM(mFinalMVPMatrix_jugador2, 0, mMVPMatrix, 0, mRotationMatrix, 0);
         Matrix.multiplyMM(mFinalMVPMatrix_laser1, 0, mMVPMatrix, 0, mRotationMatrix, 0);
-        Matrix.translateM(mFinalMVPMatrix,0,jugador1x,jugador1y,jugador1z);
+        Matrix.translateM(mFinalMVPMatrix_jugador1,0,jugador1x,jugador1y,jugador1z);
+        Matrix.translateM(mFinalMVPMatrix_jugador2,0,jugador2x,jugador2y,jugador2z);
         Matrix.translateM(mFinalMVPMatrix_laser1,0,laser1x,laser1y,laser1z);
         //mEcube[20].draw(mFinalMVPMatrix);
-        mEcube[20].draw(mFinalMVPMatrix);
+        mEcube[20].draw(mFinalMVPMatrix_jugador1);
         laser1.draw(mFinalMVPMatrix_laser1);
         for (int i = 0; i < 20 ; i++) {
             mEcube[i].draw(mMVPMatrix);
         }
-        mEcube[21].draw(mMVPMatrix);
+        mEcube[21].draw(mFinalMVPMatrix_jugador2);
 
         //mSquare = new Squaree(0.0f,4.0f,0.0f,15.0f);
         //updateCubeRotation();
@@ -202,11 +212,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public float getjugador1x(){return jugador1x;}
+    public float getjugador2x(){return jugador2x;}
     public void setjugador1x(float jugadorcitox){
         jugador1x = jugadorcitox;
     }
 
     public float getjugador1y(){return jugador1y;}
+    public float getjugador2y(){return jugador2y;}
     public void setjugador1y(float jugadorcitoy){
         jugador1y = jugadorcitoy;
     }
