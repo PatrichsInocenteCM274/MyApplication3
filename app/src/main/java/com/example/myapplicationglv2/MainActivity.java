@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
     float radio_front=3.2f;
     float modulo=0.0f;
     float unitarioY,unitarioX;
+    int balas = 5;
 
     //adapter for lifes
     private LifeAdapter adapter;
@@ -151,10 +152,27 @@ public class MainActivity extends Activity {
         });
 
         binding.btnA.setOnClickListener(v->{
-            Toast.makeText(this,"A",Toast.LENGTH_LONG).show();
+            modulo= (float) Math.sqrt(Math.pow((mRenderer.getcenterx()-mRenderer.getfront1()),2)+Math.pow((mRenderer.getcentery()-mRenderer.getfront2()),2));
+            unitarioY=(mRenderer.getcentery()-mRenderer.getfront2())/modulo;
+            unitarioX=(mRenderer.getcenterx()-mRenderer.getfront1())/modulo;
+            mRenderer.setlaser1x(mRenderer.getjugador1x());
+            mRenderer.setlaser1y(mRenderer.getjugador1y());
+            if(balas>0) {
+                for (int i = 0; i < 200000; i++) {
+                    mRenderer.setlaser1x(mRenderer.getlaser1x() + 0.00002f * unitarioX);
+                    mRenderer.setlaser1y(mRenderer.getlaser1y() + 0.00002f * unitarioY);
+                    binding.myGLSurfaceView.requestRender();
+                }
+                balas--;
+            }
+            else Toast.makeText(this,"Recargar!",Toast.LENGTH_LONG).show();
+            mRenderer.setlaser1x(100.0f); //Numero arbitrario lejos del mapa
+
+
         });
         binding.btnB.setOnClickListener(v->{
-            Toast.makeText(this,"B",Toast.LENGTH_LONG).show();
+            balas=5;
+            Toast.makeText(this,"5 balas",Toast.LENGTH_LONG).show();
         });
 
 
