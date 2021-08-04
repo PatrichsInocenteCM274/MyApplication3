@@ -15,15 +15,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        android:background="@drawable/cubeshoot"
+        ></ImageView>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:text="TITULO DEL JUEGO"
-        android:textColor="@color/purple_700"
+        android:text="CubeShoot"
+        android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Tu nickname"
+        android:textColor="@color/white"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/btnPlay"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:text="Jugar"
+        android:textColor="@color/purple_700"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
